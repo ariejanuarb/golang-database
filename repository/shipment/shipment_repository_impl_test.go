@@ -13,12 +13,12 @@ func TestInsert(t *testing.T) {
 	shipmentRepository := NewShipmentRepository(belajar_golang.GetConnection())
 
 	ctx := context.Background()
-	customer := entity.Shipment{
+	shipment := entity.Shipment{
 		Adress: "jl tanpa bayangan",
 		Cost:   "100000",
 	}
 
-	result, err := shipmentRepository.Insert(ctx, customer)
+	result, err := shipmentRepository.Insert(ctx, shipment)
 	if err != nil {
 		panic(err)
 	}
@@ -28,23 +28,23 @@ func TestInsert(t *testing.T) {
 func TestFindById(t *testing.T) {
 	shipmentRepository := NewShipmentRepository(belajar_golang.GetConnection())
 
-	comment, err := shipmentRepository.FindById(context.Background(), 1)
+	shipment, err := shipmentRepository.FindById(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(comment)
+	fmt.Println(shipment)
 }
 
 func TestFindAll(t *testing.T) {
 	shipmentRepository := NewShipmentRepository(belajar_golang.GetConnection())
 
-	comments, err := shipmentRepository.FindAll(context.Background())
+	shipments, err := shipmentRepository.FindAll(context.Background())
 	if err != nil {
 		panic(err)
 	}
 
-	for _, comment := range comments {
-		fmt.Println(comment)
+	for _, shipment := range shipments {
+		fmt.Println(shipment)
 	}
 }
 
@@ -52,12 +52,12 @@ func TestUpdate(t *testing.T) {
 	shipmentRepository := NewShipmentRepository(belajar_golang.GetConnection())
 
 	ctx := context.Background()
-	customer := entity.Shipment{
+	shipment := entity.Shipment{
 		Adress: "jl tanpa bayangan",
 		Cost:   "900000",
 	}
 
-	result, err := shipmentRepository.Update(ctx, customer)
+	result, err := shipmentRepository.Update(ctx, shipment)
 	if err != nil {
 		panic(err)
 	}
@@ -68,11 +68,11 @@ func TestDelete(t *testing.T) {
 	shipmentRepository := NewShipmentRepository(belajar_golang.GetConnection())
 
 	ctx := context.Background()
-	customer := entity.Shipment{
+	shipment := entity.Shipment{
 		Adress: "jl tanpa bayangan",
 	}
 
-	result, err := shipmentRepository.Delete(ctx, customer)
+	result, err := shipmentRepository.Delete(ctx, shipment)
 	if err != nil {
 		panic(err)
 	}
