@@ -32,7 +32,6 @@ func (repository *productRepositoryImpl) Insert(ctx context.Context, name entity
 	return name, nil
 }
 
-// service = test, repo = impl
 func (repository *productRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Product, error) {
 	script := "SELECT id, name, harga FROM product WHERE id = ? Limit 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
@@ -67,7 +66,7 @@ func (repository *productRepositoryImpl) FindAll(ctx context.Context) ([]entity.
 }
 
 func (repository *productRepositoryImpl) Update(ctx context.Context, product entity.Product) (entity.Product, error) {
-	script := "UPDATE product SET phone = ? WHERE name = ?"
+	script := "UPDATE product SET phone = ?, name = ? WHERE id = ?"
 	result, err := repository.DB.ExecContext(ctx, script, product.Name, product.Harga)
 	if err != nil {
 		return product, err
@@ -82,18 +81,18 @@ func (repository *productRepositoryImpl) Update(ctx context.Context, product ent
 	return product, err
 }
 
-func (repository *productRepositoryImpl) Delete(ctx context.Context, product entity.Product) (entity.Product, error) {
-	script := "DELETE FROM product WHERE name = ?"
-	result, err := repository.DB.ExecContext(ctx, script, product.Name)
+func (repository *productRepositoryImpl) Delete(ctx context.Context, id int32) (int32, error) {
+	script := "DELETE FROM product WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, id)
 	if err != nil {
-		return product, err
+		return id, err
 	}
 	rowCnt, err := result.RowsAffected()
 	if err != nil {
-		return product, err
+		return id, err
 	}
 	if rowCnt == 0 {
-		return product, err
+		return id, err
 	}
-	return product, nil
+	return id, nil
 }

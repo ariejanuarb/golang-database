@@ -53,7 +53,8 @@ func TestUpdate(t *testing.T) {
 
 	ctx := context.Background()
 	product := entity.Product{
-		Name:  "sling bag",
+		Id:    1,
+		Name:  "sling bag baru",
 		Harga: "900000",
 	}
 
@@ -67,12 +68,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	productRepository := NewProductRepository(belajar_golang.GetConnection())
 
-	ctx := context.Background()
-	product := entity.Product{
-		Name: "Sonia",
-	}
-
-	result, err := productRepository.Delete(ctx, product)
+	result, err := productRepository.Delete(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}

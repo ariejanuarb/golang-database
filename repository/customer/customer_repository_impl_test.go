@@ -53,8 +53,9 @@ func TestUpdate(t *testing.T) {
 
 	ctx := context.Background()
 	customer := entity.Customer{
+		Id:    1,
 		Name:  "Arie",
-		Phone: "0812345678",
+		Phone: "08123456789",
 	}
 
 	result, err := customerRepository.Update(ctx, customer)
@@ -67,12 +68,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	customerRepository := NewCustomerRepository(belajar_golang.GetConnection())
 
-	ctx := context.Background()
-	customer := entity.Customer{
-		Name: "Sonia",
-	}
-
-	result, err := customerRepository.Delete(ctx, customer)
+	result, err := customerRepository.Delete(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}

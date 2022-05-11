@@ -11,5 +11,5 @@ type ShipmentRepository interface { // interface = deklarasi dari method
 	FindById(ctx context.Context, id int32) (entity.Shipment, error)
 	FindAll(ctx context.Context) ([]entity.Shipment, error)
 	Update(ctx context.Context, adress entity.Shipment) (entity.Shipment, error)
-	Delete(ctx context.Context, adress entity.Shipment) (entity.Shipment, error)
+	Delete(ctx context.Context, id int32) (int32, error)
 }

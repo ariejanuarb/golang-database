@@ -53,6 +53,7 @@ func TestUpdate(t *testing.T) {
 
 	ctx := context.Background()
 	invoice := entity.Invoice{
+		Id:     1,
 		Date:   "2022-01-03",
 		Number: "123456",
 	}
@@ -67,12 +68,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	invoiceRepository := NewInvoiceRepository(belajar_golang.GetConnection())
 
-	ctx := context.Background()
-	invoice := entity.Invoice{
-		Number: "123456",
-	}
-
-	result, err := invoiceRepository.Delete(ctx, invoice)
+	result, err := invoiceRepository.Delete(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}

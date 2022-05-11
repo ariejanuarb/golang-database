@@ -11,5 +11,5 @@ type PaymentRepository interface { // interface = deklarasi dari method
 	FindById(ctx context.Context, id int32) (entity.Payment, error)
 	FindAll(ctx context.Context) ([]entity.Payment, error)
 	Update(ctx context.Context, method entity.Payment) (entity.Payment, error)
-	Delete(ctx context.Context, method entity.Payment) (entity.Payment, error)
+	Delete(ctx context.Context, id int32) (int32, error)
 }

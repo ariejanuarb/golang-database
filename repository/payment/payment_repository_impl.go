@@ -32,7 +32,6 @@ func (repository *paymentRepositoryImpl) Insert(ctx context.Context, method enti
 	return method, nil
 }
 
-// service = test, repo = impl
 func (repository *paymentRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Payment, error) {
 	script := "SELECT id, method, bank_name FROM payment WHERE id = ? Limit 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
@@ -67,8 +66,8 @@ func (repository *paymentRepositoryImpl) FindAll(ctx context.Context) ([]entity.
 }
 
 func (repository *paymentRepositoryImpl) Update(ctx context.Context, payment entity.Payment) (entity.Payment, error) {
-	script := "UPDATE payment SET bank_name = ? WHERE method = ?"
-	result, err := repository.DB.ExecContext(ctx, script, payment.Bank, payment.Method)
+	script := "UPDATE payment SET bank_name = ?, method = ? WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, payment.Bank, payment.Method, payment.Id)
 	if err != nil {
 		return payment, err
 	}
@@ -82,18 +81,18 @@ func (repository *paymentRepositoryImpl) Update(ctx context.Context, payment ent
 	return payment, err
 }
 
-func (repository *paymentRepositoryImpl) Delete(ctx context.Context, payment entity.Payment) (entity.Payment, error) {
-	script := "DELETE FROM payment WHERE method = ?"
-	result, err := repository.DB.ExecContext(ctx, script, payment.Method)
+func (repository *paymentRepositoryImpl) Delete(ctx context.Context, id int32) (int32, error) {
+	script := "DELETE FROM payment WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, id)
 	if err != nil {
-		return payment, err
+		return id, err
 	}
 	rowCnt, err := result.RowsAffected()
 	if err != nil {
-		return payment, err
+		return id, err
 	}
 	if rowCnt == 0 {
-		return payment, err
+		return id, err
 	}
-	return payment, nil
+	return id, nil
 }

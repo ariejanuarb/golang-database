@@ -32,7 +32,6 @@ func (repository *invoiceRepositoryImpl) Insert(ctx context.Context, no_invoice 
 	return no_invoice, nil
 }
 
-// service = test, repo = impl
 func (repository *invoiceRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Invoice, error) {
 	script := "SELECT id, no_invoice, invoice_date FROM invoice WHERE id = ? Limit 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
@@ -67,8 +66,8 @@ func (repository *invoiceRepositoryImpl) FindAll(ctx context.Context) ([]entity.
 }
 
 func (repository *invoiceRepositoryImpl) Update(ctx context.Context, invoice entity.Invoice) (entity.Invoice, error) {
-	script := "UPDATE invoice SET invoice_date = ? WHERE no_invoice = ?"
-	result, err := repository.DB.ExecContext(ctx, script, invoice.Date, invoice.Number)
+	script := "UPDATE invoice SET invoice_date = ?,no_invoice = ? WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, invoice.Date, invoice.Number, invoice.Id)
 	if err != nil {
 		return invoice, err
 	}
@@ -82,18 +81,18 @@ func (repository *invoiceRepositoryImpl) Update(ctx context.Context, invoice ent
 	return invoice, err
 }
 
-func (repository *invoiceRepositoryImpl) Delete(ctx context.Context, invoice entity.Invoice) (entity.Invoice, error) {
-	script := "DELETE FROM invoice WHERE no_invoice = ?"
-	result, err := repository.DB.ExecContext(ctx, script, invoice.Number)
+func (repository *invoiceRepositoryImpl) Delete(ctx context.Context, id int32) (int32, error) {
+	script := "DELETE FROM invoice WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, id)
 	if err != nil {
-		return invoice, err
+		return id, err
 	}
 	rowCnt, err := result.RowsAffected()
 	if err != nil {
-		return invoice, err
+		return id, err
 	}
 	if rowCnt == 0 {
-		return invoice, err
+		return id, err
 	}
-	return invoice, nil
+	return id, nil
 }

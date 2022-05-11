@@ -53,8 +53,9 @@ func TestUpdate(t *testing.T) {
 
 	ctx := context.Background()
 	payment := entity.Payment{
-		Method: "COD",
-		Bank:   "gopay",
+		Id:     1,
+		Method: "COD baru",
+		Bank:   "gopay baru",
 	}
 
 	result, err := paymentRepository.Update(ctx, payment)
@@ -67,12 +68,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	paymentRepository := NewPaymentRepository(belajar_golang.GetConnection())
 
-	ctx := context.Background()
-	payment := entity.Payment{
-		Method: "m-banking",
-	}
-
-	result, err := paymentRepository.Delete(ctx, payment)
+	result, err := paymentRepository.Delete(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}

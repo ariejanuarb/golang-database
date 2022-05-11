@@ -32,7 +32,6 @@ func (repository *customerRepositoryImpl) Insert(ctx context.Context, name entit
 	return name, nil
 }
 
-// service = test, repo = impl
 func (repository *customerRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Customer, error) {
 	script := "SELECT id, name, phone FROM customer WHERE id = ? Limit 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
@@ -67,8 +66,8 @@ func (repository *customerRepositoryImpl) FindAll(ctx context.Context) ([]entity
 }
 
 func (repository *customerRepositoryImpl) Update(ctx context.Context, customer entity.Customer) (entity.Customer, error) {
-	script := "UPDATE customer SET phone = ? WHERE name = ?"
-	result, err := repository.DB.ExecContext(ctx, script, customer.Phone, customer.Name)
+	script := "UPDATE customer SET phone = ?, name = ? WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, customer.Phone, customer.Name, customer.Id)
 	if err != nil {
 		return customer, err
 	}
@@ -82,18 +81,18 @@ func (repository *customerRepositoryImpl) Update(ctx context.Context, customer e
 	return customer, err
 }
 
-func (repository *customerRepositoryImpl) Delete(ctx context.Context, customer entity.Customer) (entity.Customer, error) {
-	script := "DELETE FROM customer WHERE name = ?"
-	result, err := repository.DB.ExecContext(ctx, script, customer.Name)
+func (repository *customerRepositoryImpl) Delete(ctx context.Context, id int32) (int32, error) {
+	script := "DELETE FROM customer WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, id)
 	if err != nil {
-		return customer, err
+		return id, err
 	}
 	rowCnt, err := result.RowsAffected()
 	if err != nil {
-		return customer, err
+		return id, err
 	}
 	if rowCnt == 0 {
-		return customer, err
+		return id, err
 	}
-	return customer, nil
+	return id, nil
 }

@@ -11,5 +11,5 @@ type InvoiceRepository interface { // interface = deklarasi dari method
 	FindById(ctx context.Context, id int32) (entity.Invoice, error)
 	FindAll(ctx context.Context) ([]entity.Invoice, error)
 	Update(ctx context.Context, no_invoice entity.Invoice) (entity.Invoice, error)
-	Delete(ctx context.Context, no_invoice entity.Invoice) (entity.Invoice, error)
+	Delete(ctx context.Context, id int32) (int32, error)
 }

@@ -15,7 +15,7 @@ func TestInsert(t *testing.T) {
 	ctx := context.Background()
 	comment := entity.Comment{
 		Email:   "repository@test.com",
-		Comment: "Komen Perdanaku",
+		Comment: "Komen Perdanaku 2",
 	}
 
 	result, err := commentRepository.Insert(ctx, comment)
@@ -53,8 +53,9 @@ func TestUpdate(t *testing.T) {
 
 	ctx := context.Background()
 	comment := entity.Comment{
-		Email:   "repository@test.com",
+		Id:      1,
 		Comment: "Comment Terbaruku",
+		Email:   "emailbaru@gmail.com",
 	}
 
 	result, err := commentRepository.Update(ctx, comment)
@@ -67,14 +68,9 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	commentRepository := NewCommentRepository(belajar_golang.GetConnection())
 
-	ctx := context.Background()
-	comment := entity.Comment{
-		Email: "repository@test.com",
-	}
-
-	result, err := commentRepository.Delete(ctx, comment)
+	comment, err := commentRepository.Delete(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(result)
+	fmt.Println(comment)
 }

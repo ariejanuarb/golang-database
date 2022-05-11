@@ -32,7 +32,6 @@ func (repository *shipmentRepositoryImpl) Insert(ctx context.Context, adress ent
 	return adress, nil
 }
 
-// service = test, repo = impl
 func (repository *shipmentRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Shipment, error) {
 	script := "SELECT id, adress, cost FROM shipment WHERE id = ? Limit 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
@@ -67,7 +66,7 @@ func (repository *shipmentRepositoryImpl) FindAll(ctx context.Context) ([]entity
 }
 
 func (repository *shipmentRepositoryImpl) Update(ctx context.Context, shipment entity.Shipment) (entity.Shipment, error) {
-	script := "UPDATE shipment SET cost = ? WHERE adress = ?"
+	script := "UPDATE shipment SET cost = ?, adress = ? WHERE id = ?"
 	result, err := repository.DB.ExecContext(ctx, script, shipment.Adress, shipment.Cost)
 	if err != nil {
 		return shipment, err
@@ -82,18 +81,18 @@ func (repository *shipmentRepositoryImpl) Update(ctx context.Context, shipment e
 	return shipment, err
 }
 
-func (repository *shipmentRepositoryImpl) Delete(ctx context.Context, shipment entity.Shipment) (entity.Shipment, error) {
-	script := "DELETE FROM shipment WHERE adress = ?"
-	result, err := repository.DB.ExecContext(ctx, script, shipment.Adress)
+func (repository *shipmentRepositoryImpl) Delete(ctx context.Context, id int32) (int32, error) {
+	script := "DELETE FROM shipment WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, id)
 	if err != nil {
-		return shipment, err
+		return id, err
 	}
 	rowCnt, err := result.RowsAffected()
 	if err != nil {
-		return shipment, err
+		return id, err
 	}
 	if rowCnt == 0 {
-		return shipment, err
+		return id, err
 	}
-	return shipment, nil
+	return id, nil
 }

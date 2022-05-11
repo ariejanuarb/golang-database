@@ -11,5 +11,5 @@ type CustomerRepository interface { // interface = deklarasi dari method
 	FindById(ctx context.Context, id int32) (entity.Customer, error)
 	FindAll(ctx context.Context) ([]entity.Customer, error)
 	Update(ctx context.Context, name entity.Customer) (entity.Customer, error)
-	Delete(ctx context.Context, name entity.Customer) (entity.Customer, error)
+	Delete(ctx context.Context, id int32) (int32, error)
 }

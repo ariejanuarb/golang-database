@@ -53,7 +53,8 @@ func TestUpdate(t *testing.T) {
 
 	ctx := context.Background()
 	shipment := entity.Shipment{
-		Adress: "jl tanpa bayangan",
+		Id:     1,
+		Adress: "jl tanpa bayangan 99",
 		Cost:   "900000",
 	}
 
@@ -67,12 +68,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	shipmentRepository := NewShipmentRepository(belajar_golang.GetConnection())
 
-	ctx := context.Background()
-	shipment := entity.Shipment{
-		Adress: "jl tanpa bayangan",
-	}
-
-	result, err := shipmentRepository.Delete(ctx, shipment)
+	result, err := shipmentRepository.Delete(context.Background(), 1)
 	if err != nil {
 		panic(err)
 	}

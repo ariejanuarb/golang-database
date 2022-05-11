@@ -19,8 +19,8 @@ func NewCommentRepository(db *sql.DB) CommentRepository {
 }
 
 func (repository *commentRepositoryImpl) Insert(ctx context.Context, comment entity.Comment) (entity.Comment, error) {
-	script := "INSERT INTO comments(email,comment) VALUES (?, ?)"
-	result, err := repository.DB.ExecContext(ctx, script, comment.Email, comment.Comment)
+	script := "INSERT INTO comments(email,comment) VALUES (?, ?)"                         // script = string query mysql
+	result, err := repository.DB.ExecContext(ctx, script, comment.Email, comment.Comment) // result, err = hasil method execontext
 	if err != nil {
 		return comment, err
 	}
@@ -32,7 +32,6 @@ func (repository *commentRepositoryImpl) Insert(ctx context.Context, comment ent
 	return comment, nil
 }
 
-// service = test, repo = impl
 func (repository *commentRepositoryImpl) FindById(ctx context.Context, id int32) (entity.Comment, error) {
 	script := "SELECT id, email, comment FROM comments WHERE id = ? Limit 1"
 	rows, err := repository.DB.QueryContext(ctx, script, id)
@@ -67,8 +66,8 @@ func (repository *commentRepositoryImpl) FindAll(ctx context.Context) ([]entity.
 }
 
 func (repository *commentRepositoryImpl) Update(ctx context.Context, comment entity.Comment) (entity.Comment, error) {
-	script := "UPDATE comments SET comment = ? WHERE email = ?"
-	result, err := repository.DB.ExecContext(ctx, script, comment.Comment, comment.Email)
+	script := "UPDATE comments SET comment = ?, email = ? WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, comment.Comment, comment.Email, comment.Id)
 	if err != nil {
 		return comment, err
 	}
@@ -82,18 +81,18 @@ func (repository *commentRepositoryImpl) Update(ctx context.Context, comment ent
 	return comment, err
 }
 
-func (repository *commentRepositoryImpl) Delete(ctx context.Context, comment entity.Comment) (entity.Comment, error) {
-	script := "DELETE FROM comments WHERE email = ?"
-	result, err := repository.DB.ExecContext(ctx, script, comment.Email)
+func (repository *commentRepositoryImpl) Delete(ctx context.Context, id int32) (int32, error) {
+	script := "DELETE FROM comments WHERE id = ?"
+	result, err := repository.DB.ExecContext(ctx, script, id)
 	if err != nil {
-		return comment, err
+		return id, err
 	}
 	rowCnt, err := result.RowsAffected()
 	if err != nil {
-		return comment, err
+		return id, err
 	}
 	if rowCnt == 0 {
-		return comment, err
+		return id, err
 	}
-	return comment, nil
+	return id, nil
 }
